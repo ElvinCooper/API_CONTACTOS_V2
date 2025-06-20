@@ -1,0 +1,4 @@
+.env
+contactos2/
+*.pyc
+__pyache__/
