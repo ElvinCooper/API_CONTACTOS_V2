@@ -8,10 +8,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+
+RUN chmod +X entrypoint.sh
+ENV FLASK_APP=app.app
+
+
 EXPOSE 8000
-
-ENV FLASK_APP=app
-
-CMD [ "gunicorn", "-b", "0.0.0.0:8000",  "app:create_app()"]
+CMD [ "./entrypoint.sh"]
 
 

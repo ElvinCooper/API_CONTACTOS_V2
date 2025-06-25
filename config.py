@@ -22,5 +22,5 @@ class BaseConfig:
 
 class DockerConfig(BaseConfig):
     
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
     # ...

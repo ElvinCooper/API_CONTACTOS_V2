@@ -2,8 +2,8 @@
 services:
   
   api:
-    build: . # Dockerfile está en el directorio actual (donde está docker-compose.yml)
-    # Reemplaza 'app' con el nombre de la carpeta raíz de tu aplicación Flask si es diferente
+    build: . 
+    
     container_name: mi_api_contactos_v2 
     ports:
       - "5000:8000" 
@@ -12,9 +12,8 @@ services:
                        
                        
     environment:
-      
-      FLASK_ENV: development 
-      DATABASE_URL: postgresql://user:password@db:5432/mydatabase 
+      FLASK_ENV: ${FLASK_ENV}
+      DATABASE_URL: ${DATABASE_URL}    #postgresql://user:password@db:5432/mydatabase 
       JWT_SECRET_KEY: ${JWT_SECRET_KEY} 
       
     depends_on:
@@ -23,15 +22,18 @@ services:
       - ./.env # Carga las variables de entorno de tu archivo .env local
     
   
-  db:
+  db:    
+    env_file:
+      - ./.env
+      
     image: postgres:14 
     container_name: postgres_db_api 
     environment:
-      
-      
-      POSTGRES_USER: contacts
-      POSTGRES_PASSWORD: KYEpostgres301020
-      POSTGRES_DB: mycontacts
+            
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
     volumes:
       - db_data:/var/lib/postgresql/data 
     ports:
