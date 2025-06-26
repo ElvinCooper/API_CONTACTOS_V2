@@ -23,7 +23,7 @@ def create_app():
 
     # Blueprints    
     # app.register_blueprint(contacto_bp, url_prefix='/api')
-    app.register_blueprint(usuario_bp , url_prefix='/api')
+    app.register_blueprint(usuario_bp , url_prefix='/api/v2')
     
     
     return app

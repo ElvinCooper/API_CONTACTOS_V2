@@ -4,6 +4,7 @@ from app.schemas.user_schema import UserSchema, UserResponseSchema, UserRegister
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt
 from extensions import db
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.exceptions import HTTPException
 from http import HTTPStatus
 from marshmallow.exceptions import ValidationError
 #from modelos.TokenBlocklist_model import TokenBlocklist
@@ -49,10 +50,16 @@ class UserRegister(MethodView):
                        
                 
             return usuario 
+        
+        except HTTPException as http_exc:
+            raise http_exc  
         except ValueError as e:
             abort(HTTPStatus.INTERNAL_SERVER_ERROR, message=f"Error de valor: {str(e)}")
         except Exception as err:
             abort(HTTPStatus.INTERNAL_SERVER_ERROR, message=f"Error interno del servidor: {str(err)}")  
+            
+            
+            
     
 # --------------------------------- Registrar un usuario ---------------------------------#      
 @usuario_bp.route('/usuarios')
@@ -98,6 +105,9 @@ class UserRegister(MethodView):
             if "usuarios_email_key" in str(e.orig):
                 abort(HTTPStatus.BAD_REQUEST, message="El email ya está registrado.")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR, message="Violación de integridad en la base de datos.")
+            
+        except HTTPException as http_exc:
+            raise http_exc    
         
         except Exception as err:
             db.session.rollback() # para que se revierta la sesion en caso de algun error.
